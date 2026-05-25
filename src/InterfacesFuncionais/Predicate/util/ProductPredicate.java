@@ -1,6 +1,5 @@
 package InterfacesFuncionais.Predicate.util;
 
-import Comparator.entities.Product;
 import InterfacesFuncionais.Predicate.entities.Product3;
 
 import java.util.function.Predicate;
