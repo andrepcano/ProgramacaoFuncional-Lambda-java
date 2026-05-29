@@ -19,9 +19,10 @@ src/
 └── Exercicios/
     ├── Ex1/
     ├── Ex2/             → Filtro e soma de funcionários ⭐
-    ├── Ex3_Sistema_Pedidos/    → Sistema completo com Generics ⭐
-    ├── Ex4_Sistema_Biblioteca/ → Biblioteca com herança e Streams ⭐
-    └── Ex5_Sistema_Pontuacao_Jogos/ → Ranking de jogadores com interfaces ⭐
+    ├── Ex3_Sistema_Pedidos/         → Sistema completo com Generics ⭐
+    ├── Ex4_Sistema_Biblioteca/      → Biblioteca com herança e Streams ⭐
+    ├── Ex5_Sistema_Pontuacao_Jogos/ → Ranking de jogadores com interfaces ⭐
+    └── Ex6_Controle_Funcionarios/   → Controle de funcionários com Generics ⭐
 ```
 
 ---
@@ -194,6 +195,89 @@ public interface Rankeavel {
 // Notificavel — desacopla o envio de notificações do resultado
 public interface Notificavel {
     void notificar(String mensagem);
+}
+```
+
+---
+
+## ⭐ Exercício 6 — Controle de Funcionários
+
+Sistema com **classe genérica**, **Streams para ordenação e filtros** e **método genérico com bounded type parameter**.
+
+### Estrutura
+
+```
+Ex6_Controle_Funcionarios/
+├── application/
+│   └── Main.java
+├── entities/
+│   ├── Funcionario.java → Funcionário com nome, cargo, salário e experiência
+│   └── Empresa.java     → Classe genérica que gerencia a lista de funcionários
+└── service/
+    └── FuncionariosService.java → Ordenação, filtros e cálculos com Streams
+```
+
+### Conceitos aplicados
+
+**`Empresa<T>` — classe genérica:**
+```java
+public class Empresa<T> {
+    private List<T> funcionarios = new ArrayList<>();
+
+    public void adicionar(T funcionario) {
+        funcionarios.add(funcionario);
+    }
+
+    public List<T> listar() {
+        return funcionarios;
+    }
+}
+```
+
+**`FuncionariosService` com Streams:**
+```java
+// ordenar por salário (maior primeiro)
+public List<Funcionario> ordenarSalario(List<Funcionario> funcionarios) {
+    return funcionarios.stream()
+            .sorted(Comparator.comparing(Funcionario::getSalario).reversed())
+            .toList();
+}
+
+// filtrar por cargo
+public String filtrarCargo(List<Funcionario> funcionarios, String cargo) {
+    return funcionarios.stream()
+            .filter(f -> f.getCargo().equals(cargo))
+            .toList().toString();
+}
+
+// soma total de salários
+public Double totalSalario(List<Funcionario> funcionarios) {
+    return funcionarios.stream()
+            .mapToDouble(f -> f.getSalario())
+            .sum();
+}
+
+// filtrar por salário mínimo
+public List<Funcionario> filtrarSalario(List<Funcionario> funcionarios, Double salario) {
+    return funcionarios.stream()
+            .filter(f -> f.getSalario() > salario)
+            .toList();
+}
+```
+
+**Método genérico com bounded type parameter:**
+```java
+public static <T extends Comparable<? super T>> T min(List<T> funcionarios) {
+    if (funcionarios.isEmpty()) {
+        throw new IllegalStateException("Não pode estar vazia!");
+    }
+    T min = funcionarios.get(0);
+    for (T item : funcionarios) {
+        if (item.compareTo(min) < 0) {
+            min = item;
+        }
+    }
+    return min;
 }
 ```
 
