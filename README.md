@@ -58,6 +58,67 @@ empServ.filteredSum(list, emp -> emp.getName().charAt(0) == 'M');
 
 ---
 
+## ⭐ Exercício 3 — Sistema de Pedidos# ⚡ Programação Funcional e Lambda em Java
+
+Estudos práticos sobre **Lambda**, **Streams** e **Interfaces Funcionais** em Java — baseado no curso do professor Nélio Alves (Udemy).
+
+---
+
+## 📁 Estrutura
+
+```
+src/
+├── Comparator/          → Ordenação com Comparator e lambda
+├── ExemploFuncoes/      → Function e Predicate na prática
+├── InterfacesFuncionais/
+│   ├── Consumer/
+│   ├── Function/
+│   └── Predicate/
+├── MethodReference/     → Exemplos com ::
+├── Stream/              → Pipelines e operações básicas
+└── Exercicios/
+    ├── Ex1/
+    ├── Ex2/             → Filtro e soma de funcionários ⭐
+    ├── Ex3_Sistema_Pedidos/         → Sistema completo com Generics ⭐
+    ├── Ex4_Sistema_Biblioteca/      → Biblioteca com herança e Streams ⭐
+    ├── Ex5_Sistema_Pontuacao_Jogos/ → Ranking de jogadores com interfaces ⭐
+    ├── Ex6_Controle_Funcionarios/   → Controle de funcionários com Generics ⭐
+    └── Ex7_Gerenciamento_Corrida/   → Gerenciamento de corridas com Comparable ⭐
+```
+
+---
+
+## 📚 Conceitos
+
+| Conceito | Resumo |
+|---|---|
+| **Lambda** | Implementação anônima de interface funcional: `(a, b) -> a.compareTo(b)` |
+| **Predicate\<T\>** | Recebe T, retorna boolean — usado para filtros |
+| **Function\<T,R\>** | Recebe T, retorna R — usado para transformações |
+| **Consumer\<T\>** | Recebe T, não retorna — usado para efeitos colaterais |
+| **Supplier\<T\>** | Não recebe, retorna T — usado para fábricas |
+| **Method Reference** | Atalho para lambda: `System.out::println` |
+| **Stream** | Pipeline de operações sobre coleções sem modificar o original |
+
+---
+
+## ⭐ Exercício 2 — Filtro e Soma de Funcionários
+
+Lê um `.csv`, filtra funcionários por salário e soma salários por inicial do nome.
+
+```java
+// emails de quem ganha mais que X
+list.stream()
+    .filter(emp -> emp.getSalary() > salary)
+    .map(Employee::getEmail)
+    .forEach(System.out::println);
+
+// soma com Predicate genérico
+empServ.filteredSum(list, emp -> emp.getName().charAt(0) == 'M');
+```
+
+---
+
 ## ⭐ Exercício 3 — Sistema de Pedidos
 
 Sistema completo com **Generics**, **Enum**, **interface funcional própria** e **Streams**.
@@ -278,6 +339,87 @@ public static <T extends Comparable<? super T>> T min(List<T> funcionarios) {
         }
     }
     return min;
+}
+```
+
+---
+
+## ⭐ Exercício 7 — Gerenciamento de Corridas
+
+Sistema com **`Comparable` customizado**, **classe genérica**, **método genérico com bounded type parameter** e **`.average()` nos Streams**.
+
+### Estrutura
+
+```
+Ex7_Gerenciamento_Corrida/
+├── application/
+│   └── Main.java
+├── entities/
+│   ├── Participante.java → Participante com nome, país, tempo médio e corridas completas
+│   └── Prova.java        → Classe genérica que gerencia a lista de participantes
+└── services/
+    └── ProvaService.java → Ordenação, filtros e cálculos com Streams
+```
+
+### Conceitos aplicados
+
+**`Participante` implementando `Comparable`:**
+```java
+// compareTo definido por corridas completadas — usado pelo método genérico max()
+@Override
+public int compareTo(Participante outro) {
+    return Integer.compare(
+            this.getCorridasCompletas(),
+            outro.getCorridasCompletas()
+    );
+}
+```
+
+**`ProvaService` com Streams:**
+```java
+// ordenar pelo tempo médio (mais rápido primeiro)
+public List<Participante> ordenarPeloTempoMD(List<Participante> participantes) {
+    return participantes.stream()
+            .sorted(Comparator.comparing(Participante::getTempoMedioKM))
+            .toList();
+}
+
+// filtrar por país
+public List<Participante> paisEspecifico(List<Participante> participantes, String pais) {
+    return participantes.stream()
+            .filter(p -> p.getPaís().equals(pais))
+            .toList();
+}
+
+// média geral de tempo com .average()
+public Double mediaGeralTempo(List<Participante> participantes) {
+    return participantes.stream()
+            .mapToInt(p -> p.getTempoMedioKM())
+            .average()
+            .orElse(0.0);
+}
+
+// filtrar acima de um tempo mínimo
+public List<Participante> filtAcimaDe(List<Participante> participantes, Integer minTempoMedio) {
+    return participantes.stream()
+            .filter(p -> p.getTempoMedioKM() > minTempoMedio)
+            .toList();
+}
+```
+
+**Método genérico — participante com mais corridas:**
+```java
+public static <T extends Comparable<? super T>> T max(List<T> participantes) {
+    if (participantes.isEmpty()) {
+        throw new IllegalStateException("Lista não pode ser vazia!");
+    }
+    T maior = participantes.get(0);
+    for (T item : participantes) {
+        if (item.compareTo(maior) > 0) {
+            maior = item;
+        }
+    }
+    return maior;
 }
 ```
 
