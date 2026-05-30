@@ -22,69 +22,10 @@ src/
     ├── Ex3_Sistema_Pedidos/         → Sistema completo com Generics ⭐
     ├── Ex4_Sistema_Biblioteca/      → Biblioteca com herança e Streams ⭐
     ├── Ex5_Sistema_Pontuacao_Jogos/ → Ranking de jogadores com interfaces ⭐
-    └── Ex6_Controle_Funcionarios/   → Controle de funcionários com Generics ⭐
-```
-
----
-
-## 📚 Conceitos
-
-| Conceito | Resumo |
-|---|---|
-| **Lambda** | Implementação anônima de interface funcional: `(a, b) -> a.compareTo(b)` |
-| **Predicate\<T\>** | Recebe T, retorna boolean — usado para filtros |
-| **Function\<T,R\>** | Recebe T, retorna R — usado para transformações |
-| **Consumer\<T\>** | Recebe T, não retorna — usado para efeitos colaterais |
-| **Supplier\<T\>** | Não recebe, retorna T — usado para fábricas |
-| **Method Reference** | Atalho para lambda: `System.out::println` |
-| **Stream** | Pipeline de operações sobre coleções sem modificar o original |
-
----
-
-## ⭐ Exercício 2 — Filtro e Soma de Funcionários
-
-Lê um `.csv`, filtra funcionários por salário e soma salários por inicial do nome.
-
-```java
-// emails de quem ganha mais que X
-list.stream()
-    .filter(emp -> emp.getSalary() > salary)
-    .map(Employee::getEmail)
-    .forEach(System.out::println);
-
-// soma com Predicate genérico
-empServ.filteredSum(list, emp -> emp.getName().charAt(0) == 'M');
-```
-
----
-
-## ⭐ Exercício 3 — Sistema de Pedidos# ⚡ Programação Funcional e Lambda em Java
-
-Estudos práticos sobre **Lambda**, **Streams** e **Interfaces Funcionais** em Java — baseado no curso do professor Nélio Alves (Udemy).
-
----
-
-## 📁 Estrutura
-
-```
-src/
-├── Comparator/          → Ordenação com Comparator e lambda
-├── ExemploFuncoes/      → Function e Predicate na prática
-├── InterfacesFuncionais/
-│   ├── Consumer/
-│   ├── Function/
-│   └── Predicate/
-├── MethodReference/     → Exemplos com ::
-├── Stream/              → Pipelines e operações básicas
-└── Exercicios/
-    ├── Ex1/
-    ├── Ex2/             → Filtro e soma de funcionários ⭐
-    ├── Ex3_Sistema_Pedidos/         → Sistema completo com Generics ⭐
-    ├── Ex4_Sistema_Biblioteca/      → Biblioteca com herança e Streams ⭐
-    ├── Ex5_Sistema_Pontuacao_Jogos/ → Ranking de jogadores com interfaces ⭐
     ├── Ex6_Controle_Funcionarios/   → Controle de funcionários com Generics ⭐
     └── Ex7_Gerenciamento_Corrida/   → Gerenciamento de corridas com Comparable ⭐
 ```
+
 
 ---
 
